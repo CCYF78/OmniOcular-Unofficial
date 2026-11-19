@@ -144,14 +144,16 @@ public class XMLConfigHandler {
         };
 
         StringBuffer quotedBuffer = new StringBuffer();
-        Pattern tagSelectorRegex = Pattern.compile("(?<=<(init|line)[^>]*>).*?(?=</\\1>)");
+        Pattern tagSelectorRegex = Pattern.compile("<(init|line)([^>]*)>([\\s\\S]*?)</\\1>");
         Matcher tagSelectorMatcher = tagSelectorRegex.matcher(stringBuilder.toString());
         while (tagSelectorMatcher.find()) {
-            String quotedString = tagSelectorMatcher.group();
+            String quotedString = tagSelectorMatcher.group(3);
             for (String[] quoteCharPair : quoteChars) {
                 quotedString = quotedString.replace(quoteCharPair[0], quoteCharPair[1]);
             }
-            tagSelectorMatcher.appendReplacement(quotedBuffer, quotedString);
+            String replacedTag = "<" + tagSelectorMatcher
+                .group(1) + tagSelectorMatcher.group(2) + ">" + quotedString + "</" + tagSelectorMatcher.group(1) + ">";
+            tagSelectorMatcher.appendReplacement(quotedBuffer, replacedTag);
         }
         tagSelectorMatcher.appendTail(quotedBuffer);
         mergedConfig = quotedBuffer.toString();
