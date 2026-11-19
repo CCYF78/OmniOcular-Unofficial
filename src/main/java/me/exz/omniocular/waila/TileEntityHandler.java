@@ -18,6 +18,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import me.exz.omniocular.IScript;
 import me.exz.omniocular.config.Config;
 import me.exz.omniocular.handler.XMLConfigHandler;
+import me.exz.omniocular.util.GTCompat;
 
 public class TileEntityHandler implements IWailaDataProvider {
 
@@ -96,7 +97,10 @@ public class TileEntityHandler implements IWailaDataProvider {
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
         int y, int z) {
-        if (te != null) te.writeToNBT(tag);
+        if (te != null) {
+            te.writeToNBT(tag);
+            GTCompat.appendInfo(te, tag);
+        }
         return tag;
     }
 }
