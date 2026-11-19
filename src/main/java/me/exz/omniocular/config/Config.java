@@ -93,7 +93,7 @@ public class Config {
             "scriptClassName",
             Configuration.CATEGORY_GENERAL,
             new String[] {},
-            "The class name of the script written in java. as: me.exz.omniocular.scripts.GTNHScript");
+            "Fully qualified Java class names implementing me.exz.omniocular.IScript");
 
         blackEntity.addAll(Arrays.asList(blackEntityNames));
 
