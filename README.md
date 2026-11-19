@@ -11,7 +11,7 @@ WAILA 信息面板。
 - **黑名单**：屏蔽 NBT 数据过大的方块，避免查看时卡顿
 - **缓存机制**：激进的缓存优化，减少 WAILA 刷新带来的 FPS 损耗
 - **Java 脚本扩展**：复杂脚本可以实现 `IScript` 接口用 Java 编写，性能更高
-- **GT 设备信息读取**：脚本可访问 GT 机器 `writeToNBT()` 之外的信息（本版新增）
+- **GT 设备信息读取**：脚本可访问 GT 机器 `writeToNBT()` 之外的信息
 
 ## 安装
 
@@ -22,6 +22,8 @@ WAILA 信息面板。
 ## 使用
 
 ### XML 脚本
+
+脚本可参考 [GTNH_OmniOcular](https://github.com/CCYF78/GTNH_OmniOcular)。
 
 1. 将 `.xml` 脚本放入 `config/OmniOcular/` 目录
 2. 游戏内执行 `/oor` 即可热重载脚本，无需重启
@@ -43,7 +45,7 @@ WAILA 信息面板。
 | --- | --- | --- |
 | `ooInfo` | `getInfoData()` 返回的字符串数组 | 所有 GT 版本 |
 | `ooInfoMap` | `getInfoMap()` 返回的键值对 | GT 5.09.51.119 及以上 |
-| `ooInfoDecodable` | 为 `true` 时表示 `ooInfo` 需要用 `decode()` 还原 | 依赖 `decode()` 是否存在 |
+| `ooInfoDecodable` | `true` 表示条目需用 `decode()` 解码；`false` 表示条目已是文本 | 所有 GT 版本 |
 
 示例：
 
@@ -68,16 +70,19 @@ function findInfo(prefix) {
     return null;
 }
 
-// 例如取多方块通用的「大概功率」
+// 例如取多方块通用的「功率」
 var usage = findInfo("GT5U.multiblock.usage");
 ```
 
-> 不同机器返回的条目数量和顺序并不相同，建议按 key 前缀查找，而不是写死数组下标。
+> 不同机器返回的条目数量和顺序并不相同，建议按 key 前缀查找。
 
 ## 兼容性
 
-- Minecraft 1.7.10 / GT New Horizons 2.x
-- Java 8 与 Java 17 / 21（Java 11+ 需要 Nashorn，模组会自行处理）
+- Minecraft 1.7.10
+- GTNH 2.8（GT 5.09.51+、Waila 1.8.x）
+- GTNH 2.9（GT 5.09.54+、Waila 1.19.x）
+- Java 8（JDK 自带 Nashorn）、Java 17 / 21 / 25（GTNH 由 lwjgl3ify 提供 Nashorn）；其他环境首次启动会自动下载
+- 未对低版本 GTNH 进行兼容性测试，不保证对过低版本的支持
 
 ## 致谢
 
