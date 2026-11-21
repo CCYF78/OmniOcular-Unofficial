@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.1]
+
+### 新增
+
+- `ooInfo` 新增 `IGregTechDeviceInformation#getExtraInfoData()` 条目。
+
 ## [1.7.0] - 2026-11-20
 
 ### 新增

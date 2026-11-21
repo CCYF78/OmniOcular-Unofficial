@@ -1,6 +1,8 @@
 package me.exz.omniocular.util;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +19,7 @@ public final class GTCompat {
     private static Method getMetaTileEntity;
     private static Method isGivingInformation;
     private static Method getInfoData;
+    private static Method getExtraInfoData;
     private static Method getInfoMap;
     private static Method decode;
 
@@ -36,6 +39,7 @@ public final class GTCompat {
             if (IGregTechDeviceInformation != null) {
                 isGivingInformation = findMethod(IGregTechDeviceInformation, "isGivingInformation");
                 getInfoData = findMethod(IGregTechDeviceInformation, "getInfoData");
+                getExtraInfoData = findMethod(IGregTechDeviceInformation, "getExtraInfoData", List.class);
                 getInfoMap = findMethod(IGregTechDeviceInformation, "getInfoMap");
                 decode = findMethod(IGregTechDeviceInformation, "decode", String.class);
             }
@@ -66,16 +70,23 @@ public final class GTCompat {
                 if (Boolean.FALSE.equals(giving)) return;
             }
 
+            NBTTagList list = new NBTTagList();
             if (getInfoData != null) {
                 Object data = getInfoData.invoke(mte);
                 if (data instanceof String[]) {
-                    NBTTagList list = new NBTTagList();
                     for (String line : (String[]) data) {
                         if (line != null) list.appendTag(new NBTTagString(line));
                     }
-                    if (list.tagCount() > 0) tag.setTag("ooInfo", list);
                 }
             }
+            if (getExtraInfoData != null) {
+                List<String> extra = new ArrayList<>();
+                getExtraInfoData.invoke(mte, extra);
+                for (String line : extra) {
+                    if (line != null) list.appendTag(new NBTTagString(line));
+                }
+            }
+            if (list.tagCount() > 0) tag.setTag("ooInfo", list);
 
             if (getInfoMap != null) {
                 Object map = getInfoMap.invoke(mte);
