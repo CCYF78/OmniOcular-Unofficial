@@ -1,5 +1,6 @@
 package me.exz.omniocular.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
 
 public final class GTCompat {
 
@@ -101,6 +103,40 @@ public final class GTCompat {
                 }
             }
             tag.setBoolean("ooInfoDecodable", decode != null);
+
+            appendAntimatterForge(mte, tag);
+        } catch (Throwable ignored) {}
+    }
+
+    private static void appendAntimatterForge(Object mte, NBTTagCompound tag) {
+        try {
+            Class<?> cls = mte.getClass();
+            if (!"goodgenerator.blocks.tileEntity.AntimatterForge".equals(cls.getName())) return;
+
+            Field modifierField = cls.getDeclaredField("modifiers");
+            modifierField.setAccessible(true);
+            Object rawModifiers = modifierField.get(mte);
+            if (rawModifiers instanceof float[]) {
+                float[] mods = (float[]) rawModifiers;
+                if (mods.length >= 4) {
+                    tag.setFloat("ooForgeM", mods[0]);
+                    tag.setFloat("ooForgeG", mods[1]);
+                    tag.setFloat("ooForgeC", mods[2]);
+                    tag.setFloat("ooForgeA", mods[3]);
+                }
+            }
+
+            Field fluidField = cls.getDeclaredField("upgradeFluids");
+            fluidField.setAccessible(true);
+            Object rawFluids = fluidField.get(mte);
+            if (rawFluids instanceof FluidStack[]) {
+                FluidStack[] fluids = (FluidStack[]) rawFluids;
+                for (int i = 0; i < fluids.length && i < 4; i++) {
+                    if (fluids[i] == null) continue;
+                    String name = fluids[i].getLocalizedName();
+                    if (name != null) tag.setString("ooForgeF" + i, name);
+                }
+            }
         } catch (Throwable ignored) {}
     }
 
