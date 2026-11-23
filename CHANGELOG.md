@@ -5,6 +5,11 @@
 ### 新增
 
 - 反射读取 `goodgenerator` 的 `AntimatterForge` 私有字段 `modifiers` 与 `upgradeFluids`
+- 合并 WailaAlignFix v1.0.5（作者 shinyashen，见 PR #1）：修复 Waila 多列 tooltip 的右对齐列偏移与宽度测量，粗体段、中英混排及 Angelica 字体度量现在与绘制一致
+
+### 依赖
+
+- 新增 `compileOnly` 依赖 Angelica 2.2.43，仅用于字体度量访问器，不打入 jar；未安装 Angelica 时自动回退原版度量
 
 ## [1.7.1]
 
