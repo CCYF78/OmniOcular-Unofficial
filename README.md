@@ -88,6 +88,7 @@ var usage = findInfo("GT5U.multiblock.usage");
 
 - exzhawk（Epix）：原版 OmniOcular
 - wohaopa，Taskeren：Unofficial 版维护
+- shinyashen：Waila 右对齐列偏移与字体度量修复（WailaAlignFix，PR #1）
 - 所有脚本贡献者
 
 ## License
