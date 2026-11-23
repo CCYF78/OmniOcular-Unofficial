@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.2] - 2026-11-24
+
+### 新增
+
+- 反射读取 `goodgenerator` 的 `AntimatterForge` 私有字段 `modifiers` 与 `upgradeFluids`
+
 ## [1.7.1]
 
 ### 新增
